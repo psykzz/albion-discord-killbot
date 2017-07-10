@@ -1,0 +1,27 @@
+{
+  "name": "albion-discord-killbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/start.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/psykzz/albion-discord-killbot.git"
+  },
+  "author": "https://psykzz.com",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/psykzz/albion-discord-killbot/issues"
+  },
+  "homepage": "https://github.com/psykzz/albion-discord-killbot#readme",
+  "dependencies": {
+    "debug": "^2.6.8",
+    "discord.js": "^11.1.0",
+    "express": "^4.15.3",
+    "heroku-self-ping": "^1.1.3",
+    "request": "^2.81.0"
+  }
+}
