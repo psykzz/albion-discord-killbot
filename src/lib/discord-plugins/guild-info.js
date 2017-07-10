@@ -18,14 +18,17 @@ class GuildInfo extends Plugin {
     if(match) {
       this.search(match[1], (err, results) => {
         debug(err, results, results.guilds);
+
         if (!results.guilds) {
           return;
         }
+
         var guild = results.guilds[0];
         if(!guild) {
           message.reply('no results.');
           return;
         }
+
         var alliance = '';
         if(guild.AllianceName) {
           alliance = ` of ${guild.AllianceName}`;

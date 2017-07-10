@@ -18,14 +18,17 @@ class PlayerInfo extends Plugin {
     if(match) {
       this.search(match[1], (err, results) => {
         debug(err, results, results.players);
+
         if (!results.players) {
           return;
         }
+
         var player = results.players[0];
         if(!player) {
           message.reply('no results.');
           return;
         }
+
         var guild = '';
         if(player.GuildName) {
           guild = ` of ${player.GuildName}`;
@@ -46,4 +49,4 @@ class PlayerInfo extends Plugin {
   }
 }
 
-module.exports = GuildInfo;
+module.exports = PlayerInfo;
