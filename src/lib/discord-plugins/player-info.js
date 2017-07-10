@@ -30,14 +30,14 @@ class PlayerInfo extends Plugin {
           albionAPI.getPlayerInfo(player.Id, cb);
         },
         function replyMessage(playerInfo, cb) {
-          message.reply(`\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKills: ${playerInfo.killFame}\nDeaths: ${playerInfo.DeathFame}\nRatio: ${playerInfo.killFame / playerInfo.DeathFame}\`\`\``)
+          message.reply(`\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKills: ${playerInfo.killFame}\nDeaths: ${playerInfo.DeathFame}\nRatio: ${playerInfo.killFame / playerInfo.DeathFame}\`\`\``);
           cb();
         }
       ], (err) => {
         if(err) {
           debug('Error handling the request', err);
         }
-      })
+      });
     }
   }
 

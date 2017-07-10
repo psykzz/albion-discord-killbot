@@ -29,15 +29,33 @@ class GuildInfo extends Plugin {
         function getMoreInfo(guild, cb) {
           albionAPI.getGuildInfo(guild.Id, cb);
         },
-        function replyMessage(guildInfo, cb) {
-          message.reply(`\n\`\`\`text\nGuild: ${guildInfo.Name} - [${guildInfo.AllianceTag}] ${guildInfo.AllianceName}\nFounder: ${guildInfo.FounderName}\nFounded on: ${guildInfo.Founded}\n\n** Fame **\nKills: ${guildInfo.killFame}\nDeaths: ${guildInfo.DeathFame}\nRatio: ${guildInfo.killFame / guildInfo.DeathFame}\`\`\``)
+        function getMembers(guildInfo, cb) {
+          albionAPI.getGuildMembers(guildInfo.Id, (err, guildMembers) => {
+            if(err) {
+              return cb(err);
+            }
+
+            // parse them here to keep it clean
+            var members = "";
+            var guildNames = guildMembers.map(member => member.Name);
+            if(guildNames.length < 10) {
+              guildNames = guildNames.join(', ');
+            } else {
+              guildNames = guildNames.length;
+            }
+
+            cb(null, guildInfo, guildNames);
+          });
+        },
+        function replyMessage(guildInfo, guildMembers, cb) {
+          message.reply(`\n\`\`\`text\nGuild: ${guildInfo.Name} - [${guildInfo.AllianceTag}] ${guildInfo.AllianceName}\nFounder: ${guildInfo.FounderName}\nFounded on: ${guildInfo.Founded}\n\n** Fame **\nKills: ${guildInfo.killFame}\nDeaths: ${guildInfo.DeathFame}\nRatio: ${guildInfo.killFame / guildInfo.DeathFame}\n\nMembers: ${guildMembers}\`\`\``);
           cb();
         }
       ], (err) => {
         if(err) {
           debug('Error handling the request', err);
         }
-      })
+      });
     }
   }
 

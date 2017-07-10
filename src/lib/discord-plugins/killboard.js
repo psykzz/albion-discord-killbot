@@ -5,7 +5,7 @@ class Killboard extends Plugin {
   onMessage(message) {
   }
   onTick() {
-    debug("tick")
+    debug("tick");
   }
 }
 
