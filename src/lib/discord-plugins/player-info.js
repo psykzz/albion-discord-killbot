@@ -42,7 +42,7 @@ class PlayerInfo extends Plugin {
     if (!message) {
       return;
     }
-    this.handleGuildSearch(message);
+    this.handlePlayerSearch(message);
   }
 }
 
