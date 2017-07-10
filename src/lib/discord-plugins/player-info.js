@@ -1,9 +1,9 @@
-var debug = require('debug')('Albion:Plugin:GuildInfo');
+var debug = require('debug')('Albion:Plugin:PlayerInfo');
 var Plugin = require('./base-plugin');
 var request = require('request');
 
 
-class GuildInfo extends Plugin {
+class PlayerInfo extends Plugin {
 
   search(query, cb) {
     debug(`Searching for: ${query}`);
@@ -13,21 +13,24 @@ class GuildInfo extends Plugin {
     });
   }
 
-  handleGuildSearch(message) {
-    var match = message.cleanContent.match(/^\!albion guild (.*)$/i);
+  handlePlayerSearch(message) {
+    var match = message.cleanContent.match(/^\!albion player (.*)$/i);
     if(match) {
       this.search(match[1], (err, results) => {
-        debug(err, results, results.guilds);
-        if (!results.guilds) {
+        debug(err, results, results.players);
+        if (!results.players) {
           return;
         }
-        var guild = results.guilds[0];
-        var alliance = '';
-        if(guild.AllianceName) {
-          alliance = ` of ${guild.AllianceName}`;
+        var player = results.players[0];
+        if(!player) {
+          message.reply('no results.')
+        }
+        var guild = '';
+        if(player.GuildName) {
+          guild = ` of ${player.GuildName}`;
         }
 
-        message.reply(`Found Player: ${guild.Name}${alliance}.`);
+        message.reply(`Found Player: ${player.Name}${guild}.`);
 
       });
       debug(match);

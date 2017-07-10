@@ -14,20 +14,23 @@ class GuildInfo extends Plugin {
   }
 
   handleGuildSearch(message) {
-    var match = message.cleanContent.match(/^\!albion player (.*)$/i);
+    var match = message.cleanContent.match(/^\!albion guild (.*)$/i);
     if(match) {
       this.search(match[1], (err, results) => {
-        debug(err, results, results.players);
-        if (!results.players) {
+        debug(err, results, results.guilds);
+        if (!results.guilds) {
           return;
         }
-        var player = results.players[0];
-        var guild = '';
-        if(player.GuildName) {
-          guild = ` of ${player.GuildName}`;
+        var guild = results.guilds[0];
+        if(!guild) {
+          message.reply('no results.')
+        }
+        var alliance = '';
+        if(guild.AllianceName) {
+          alliance = ` of ${guild.AllianceName}`;
         }
 
-        message.reply(`Found Guild: ${player.Name}${guild}.`);
+        message.reply(`Found Guild: ${guild.Name}${alliance}.`);
 
       });
       debug(match);
