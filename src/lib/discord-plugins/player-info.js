@@ -27,7 +27,7 @@ class GuildInfo extends Plugin {
           alliance = ` of ${guild.AllianceName}`;
         }
 
-        message.reply(`Found Guild: ${guild.Name}${alliance}.`);
+        message.reply(`Found Player: ${guild.Name}${alliance}.`);
 
       });
       debug(match);
