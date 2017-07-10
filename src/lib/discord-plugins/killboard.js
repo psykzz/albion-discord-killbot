@@ -4,6 +4,9 @@ var Plugin = require('./base-plugin');
 class Killboard extends Plugin {
   onMessage(message) {
   }
+  onTick() {
+    debug("tick")
+  }
 }
 
 module.exports = Killboard;

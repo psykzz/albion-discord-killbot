@@ -1,43 +1,43 @@
 var debug = require('debug')('Albion:Plugin:GuildInfo');
 var Plugin = require('./base-plugin');
-var request = require('request');
 
+var async = require('async');
+var albionAPI = require('../albion-api');
 
 class GuildInfo extends Plugin {
-
-  search(query, cb) {
-    debug(`Searching for: ${query}`);
-    request(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${query}`, function (error, response, body) {
-      debug(`statusCode: ${response && response.statusCode}`);
-      cb(error, JSON.parse(body));
-    });
-  }
 
   handleGuildSearch(message) {
     var match = message.cleanContent.match(/^\!albion guild (.*)$/i);
     if(match) {
-      this.search(match[1], (err, results) => {
-        debug(err, results, results.guilds);
 
-        if (!results.guilds) {
-          return;
+      async.waterfall([
+        function search(cb) {
+          albionAPI.search(match[1], cb);
+        },
+        function checkSearch(results, cb) {
+          if (!results.guilds) {
+            return message.reply('no results.');
+          }
+
+          var guild = results.guilds[0];
+          if(!guild) {
+            return message.reply('no results.');
+          }
+
+          cb(null, guild);
+        },
+        function getMoreInfo(guild, cb) {
+          albionAPI.getGuildInfo(guild.Id, cb);
+        },
+        function replyMessage(guildInfo, cb) {
+          message.reply(`\n\`\`\`text\nGuild: ${guildInfo.Name} - [${guildInfo.AllianceTag}] ${guildInfo.AllianceName}\nFounder: ${guildInfo.FounderName}\nFounded on: ${guildInfo.Founded}\n\n** Fame **\nKills: ${guildInfo.killFame}\nDeaths: ${guildInfo.DeathFame}\nRatio: ${guildInfo.killFame / guildInfo.DeathFame}\`\`\``)
+          cb();
         }
-
-        var guild = results.guilds[0];
-        if(!guild) {
-          message.reply('no results.');
-          return;
+      ], (err) => {
+        if(err) {
+          debug('Error handling the request', err);
         }
-
-        var alliance = '';
-        if(guild.AllianceName) {
-          alliance = ` of ${guild.AllianceName}`;
-        }
-
-        message.reply(`Found Guild: ${guild.Name}${alliance}.`);
-
-      });
-      debug(match);
+      })
     }
   }
 
@@ -45,6 +45,7 @@ class GuildInfo extends Plugin {
     if (!message) {
       return;
     }
+
     this.handleGuildSearch(message);
   }
 }
