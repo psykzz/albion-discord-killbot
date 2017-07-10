@@ -23,7 +23,8 @@ class GuildInfo extends Plugin {
         }
         var guild = results.guilds[0];
         if(!guild) {
-          message.reply('no results.')
+          message.reply('no results.');
+          return;
         }
         var alliance = '';
         if(guild.AllianceName) {

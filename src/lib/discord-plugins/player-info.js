@@ -23,7 +23,8 @@ class PlayerInfo extends Plugin {
         }
         var player = results.players[0];
         if(!player) {
-          message.reply('no results.')
+          message.reply('no results.');
+          return;
         }
         var guild = '';
         if(player.GuildName) {
