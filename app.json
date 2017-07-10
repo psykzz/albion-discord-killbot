@@ -1,0 +1,7 @@
+{
+  "name": "Albion Discord bot",
+  "description": "A barebones discord bot for Albion Online",
+  "repository": "https://github.com/psykzz/albion-discord-killbot",
+  "logo": "https://rawgit.com/heroku/node-js-sample/master/public/node.svg",
+  "keywords": ["game", "albion", "online"]
+}
