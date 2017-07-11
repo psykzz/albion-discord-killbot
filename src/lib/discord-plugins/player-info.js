@@ -2,7 +2,7 @@ var debug = require('debug')('Albion:Plugin:PlayerInfo');
 var Plugin = require('./base-plugin');
 
 var async = require('async');
-var albionAPI = require('../albion-api');
+var albionAPI = require('albion-api');
 
 class PlayerInfo extends Plugin {
 

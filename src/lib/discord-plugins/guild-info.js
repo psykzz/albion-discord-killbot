@@ -2,7 +2,7 @@ var debug = require('debug')('Albion:Plugin:GuildInfo');
 var Plugin = require('./base-plugin');
 
 var async = require('async');
-var albionAPI = require('../albion-api');
+var albionAPI = require('albion-api');
 
 class GuildInfo extends Plugin {
 
