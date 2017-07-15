@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/psykzz/albion-discord-killbot#readme",
   "dependencies": {
-    "albion-api": "^1.0.2",
+    "albion-api": "^1.0.4",
     "async": "^2.5.0",
     "debug": "^2.6.8",
     "discord.js": "^11.1.0",
