@@ -28,7 +28,7 @@ class Bot {
       var startDate = new Date().toISOString().
         replace(/T/, ' ').      // replace T with a space
         replace(/\..+/, '');
-      this.client.user.setGame(`since ${startDate}.`);
+      this.client.user.setGame(`since ${startDate}`);
     });
 
     debug('Logging in...');
