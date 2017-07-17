@@ -40,8 +40,8 @@ class Killboard extends Plugin {
         }
 
         // Formatting
-        var killer = '';
-        var victim = '';
+        var killer = res.Killer.Name;
+        var victim = res.Victim.Name;
         var otherHelpers = (res.groupMemberCount > 0) ? ` +${res.groupMemberCount}` : '';
         if(res.Killer.GuildId === guild.GuildId) {
           killer = (res.Killer.GuildId === guild.GuildId) ? `**${res.Killer.Name}** (${guild.GuildName})` : `${res.Killer.Name}`;
