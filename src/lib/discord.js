@@ -23,14 +23,17 @@ class Bot {
     debug('Setting up handlers before logging in');
     this.setupHandlers();
     debug('Handlers setup finished.');
-    debug('Logging in...');
-    this.client.login(this.token, (token) => {
-      debug('Logged in.');
 
+    this.client.on('ready', () => {
       var startDate = new Date().toISOString().
         replace(/T/, ' ').      // replace T with a space
         replace(/\..+/, '');
-      this.client.setGame(`since ${startDate}.`);  
+      this.client.user.setGame(`since ${startDate}.`);
+    });
+
+    debug('Logging in...');
+    this.client.login(this.token, (token) => {
+      debug('Logged in.');
       cb();
     });
   }
