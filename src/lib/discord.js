@@ -26,6 +26,11 @@ class Bot {
     debug('Logging in...');
     this.client.login(this.token, (token) => {
       debug('Logged in.');
+
+      var startDate = new Date().toISOString().
+        replace(/T/, ' ').      // replace T with a space
+        replace(/\..+/, '');
+      this.client.setGame(`since ${startDate}.`);  
       cb();
     });
   }
