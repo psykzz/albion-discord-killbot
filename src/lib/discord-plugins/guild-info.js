@@ -48,7 +48,7 @@ class GuildInfo extends Plugin {
           });
         },
         function replyMessage(guildInfo, guildMembers, cb) {
-          message.reply(`\n\`\`\`text\nGuild: ${guildInfo.Name} - [${guildInfo.AllianceTag}] ${guildInfo.AllianceName}\nFounder: ${guildInfo.FounderName}\nFounded on: ${guildInfo.Founded}\n\n** Fame **\nKills: ${guildInfo.killFame}\nDeaths: ${guildInfo.DeathFame}\nRatio: ${guildInfo.killFame / guildInfo.DeathFame}\n\nMembers: ${guildMembers}\`\`\``);
+          message.reply(`\n\`\`\`text\nGuild: ${guildInfo.Name} - [${guildInfo.AllianceTag}] ${guildInfo.AllianceName}\nFounder: ${guildInfo.FounderName}\nFounded on: ${guildInfo.Founded}\n\n** Fame **\nKill: ${guildInfo.KillFame}\nDeath: ${guildInfo.DeathFame}\nRatio: ${guildInfo.killFame / guildInfo.DeathFame}\n\nMembers: ${guildMembers}\`\`\``);
           cb();
         }
       ], (err) => {

@@ -25,10 +25,18 @@ class Bot {
     debug('Handlers setup finished.');
 
     this.client.on('ready', () => {
+      debug("Event: ready triggered");
       var startDate = new Date().toISOString().
         replace(/T/, ' ').      // replace T with a space
         replace(/\..+/, '');
       this.client.user.setGame(`since ${startDate}`);
+
+      this.plugins.forEach(plugin => {
+        if (plugin.onInit) {
+          debug('calling onInit')
+          plugin.onInit();
+        }
+      });
     });
 
     debug('Logging in...');
