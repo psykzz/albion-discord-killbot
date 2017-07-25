@@ -11,6 +11,15 @@ class Plugin {
     }
   }
 
+  hasAdmin(message) {
+    // if(message.member && !message.member.roles.exists('name', 'ADMIN')) {
+    if(message.member && !message.member.roles.exists('name', 'Apostles')) {
+      this.reply(message, "not enough roles.");
+      return false;
+    }
+    return true;
+  }
+
   getChannel(guildName, channelName) {
     var guild = this.bot.client.guilds.find('name', guildName);
     if(!guild) {

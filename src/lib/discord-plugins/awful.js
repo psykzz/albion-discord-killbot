@@ -4,7 +4,7 @@ var Plugin = require('./base-plugin');
 var async = require('async');
 var albionAPI = require('albion-api');
 
-var REDIS_PLUGIN_KEY = 'awful-players'
+var REDIS_PLUGIN_KEY = 'awful-players';
 var AWFUL_PLAYERS = [];
 class Awful extends Plugin {
 

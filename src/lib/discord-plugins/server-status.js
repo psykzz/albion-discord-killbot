@@ -25,7 +25,7 @@ class Killboard extends Plugin {
   onInit() {
     redis.get(REDIS_PLUGIN_KEY, (err, val) => {
       if(err || val === null) {
-        return debug(`Error: ${err}\nval: ${val}`);
+        return debug(`Error: ${err} val: ${val}`);
       }
       debug("Setting channels from redis", val);
       var outputChannels = JSON.parse(val);
@@ -40,13 +40,17 @@ class Killboard extends Plugin {
 
     albionAPI.getServerStatus((err, status) => {
       debug("Server status", status);
-      message.reply(`\n\`\`\`Live: ${status.live.status}\nStaging: ${status.staging.status}\`\`\``);
+      message.reply(`\n\`\`\`Live: ${status.live.status} - ${status.live.message}\nStaging: ${status.staging.status} - ${status.staging.message}\`\`\``);
     });
   }
 
   setChannel(message) {
     var match = message.cleanContent.match(/^\!albion statusalert(.*)$/i);
     if(!match) {
+      return;
+    }
+    if(!this.hasAdmin(message)) {
+      debug(`setChannel: Blocked admin request from ${message.author.name}`);
       return;
     }
 
@@ -107,16 +111,16 @@ class Killboard extends Plugin {
 
       if(results.live.status !== current.live.status) {
         debug("Live Server status changed", results.live);
-        for(var guild in outputChannels) {
-          var channel = this.getChannel(guild, outputChannels[guild]);
+        for(let guild in outputChannels) {
+          let channel = this.getChannel(guild, outputChannels[guild]);
           channel.send(`Server status changed to ${results.live.status}\nMessage: \`${results.live.message}\``);
         }
         current.live.status = results.live.status;
       }
       if(results.staging.status !== current.staging.status) {
         debug("Staging Server status changed", results.staging);
-        for(var guild in outputChannels) {
-          var channel = this.getChannel(guild, outputChannels[guild]);
+        for(let guild in outputChannels) {
+          let channel = this.getChannel(guild, outputChannels[guild]);
           channel.send(`Staging server status changed to ${results.staging.status}\nMessage: \`${results.staging.message}\``);
         }
         current.staging.status = results.staging.status;
