@@ -13,6 +13,7 @@ web.use('/', router);
 bot.use([
   require('./lib/discord-plugins/killboard'),
   require('./lib/discord-plugins/guild-info'),
+  require('./lib/discord-plugins/server-status'),
   require('./lib/discord-plugins/player-info')
 ]);
 

@@ -6,34 +6,22 @@ var albionAPI = require('albion-api');
 var redis = require('../redis');
 
 // Globals
-var REDIS_CHANNEL_KEY = 'out-channels'
+var REDIS_PLUGIN_KEY = 'killboard-channels'
 
 var outputChannels = {};
 var announcedKills = [];
 class Killboard extends Plugin {
 
   onInit() {
-    redis.get(REDIS_CHANNEL_KEY, (err, val) => {
-      debug(err, val);
+    redis.get(REDIS_PLUGIN_KEY, (err, val) => {
       if(err || val === null) {
-        debug(`Error: ${err}\nval: ${val}`);
+        debug(`Error: ${err} val: ${val}`);
         return;
       }
 
       var rawChannels = JSON.parse(val);
       rawChannels.forEach(ch => {
-        var guild = this.bot.client.guilds.find('name', ch.guild);
-        if(!guild) {
-          debug("Unable to find guild", ch.guild, guild);
-          return;
-        }
-
-        var channel = guild.channels.find('name', ch.channel);
-        if(!channel) {
-          debug("Unable to find channel", ch.channel, channel);
-          return;
-        }
-
+        var channel = this.getChannel(ch.guild, ch.channel);
         outputChannels[ch.id] = channel;
       });
     });
@@ -60,21 +48,16 @@ class Killboard extends Plugin {
           }
 
           outputChannels[guildId] = channel;
-          message.reply(`kill alerts for ${guildName} are now setup in #${channel.name}${previously}`);
+          this.reply(message, `kill alerts for ${guildName} are now setup in #${channel.name}${previously}`);
 
           // Save these for when we need to restart later.
-          redis.get(REDIS_CHANNEL_KEY, (err, val) => {
+          redis.get(REDIS_PLUGIN_KEY, (err, val) => {
             if(err) {
               debug("Error saving channel configs for killalert");
               return;
             }
 
-            var data;
-            if(val === null) {
-              data = [];
-            } else {
-              data = JSON.parse(val);
-            }
+            var data = (val === null) ? JSON.parse(val) : [];
 
             // Remove old key if it exists
             data = data.filter((item) => {
@@ -84,7 +67,7 @@ class Killboard extends Plugin {
             data.push({
               id: guildId,
               guild: message.guild.name,
-              channel: message.channel.name
+              channel: channel.name
             });
 
             redis.set(REDIS_CHANNEL_KEY, JSON.stringify(data));
@@ -107,11 +90,11 @@ class Killboard extends Plugin {
             return;
           }
           if(!outputChannels[guildId]) {
-            message.reply(`kill alerts for ${guildName} are not setup, nothing to remove.`);
+            this.reply(message, `kill alerts for ${guildName} are not setup, nothing to remove.`);
           }
 
           delete outputChannels[guildId];
-          message.reply(`kill alerts for ${guildName} are now removed.`);
+          this.reply(message, `kill alerts for ${guildName} are now removed.`);
 
           // Save these for when we need to restart later.
           redis.get(REDIS_CHANNEL_KEY, (err, val) => {
@@ -120,12 +103,7 @@ class Killboard extends Plugin {
               return;
             }
 
-            var data;
-            if(val === null) {
-              data = [];
-            } else {
-              data = JSON.parse(val);
-            }
+            var data = (val === null) ? JSON.parse(val) : [];
 
             // Remove old key if it exists
             data = data.filter((item) => {
