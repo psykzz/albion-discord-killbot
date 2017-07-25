@@ -33,7 +33,7 @@ class Bot {
 
       this.plugins.forEach(plugin => {
         if (plugin.onInit) {
-          debug('calling onInit')
+          debug('Calling onInit for plugin');
           plugin.onInit();
         }
       });
