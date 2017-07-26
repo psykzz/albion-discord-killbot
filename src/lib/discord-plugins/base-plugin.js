@@ -1,3 +1,4 @@
+var debug = require('debug')('Albion:Plugin:BasePlugin');
 var config = require('../../config');
 
 class Plugin {
@@ -22,12 +23,14 @@ class Plugin {
 
   getChannel(guildName, channelName) {
     var guild = this.bot.client.guilds.find('name', guildName);
+    debug("getChannel: Guild", guildName, guild.name);
     if(!guild) {
       debug("Unable to find guild", guildName);
       return;
     }
 
     var channel = guild.channels.find('name', channelName);
+    debug("getChannel: Channel", channelName, channel.name);
     if(!channel) {
       debug("Unable to find channel", channelName);
       return;
