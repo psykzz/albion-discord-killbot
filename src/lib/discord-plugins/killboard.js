@@ -9,7 +9,7 @@ var redis = require('../redis');
 var REDIS_PLUGIN_KEY = 'killboard-channels-v2';
 
 var outputChannels = {};
-var announcedKills = [];
+var announcedKills = {};
 class Killboard extends Plugin {
 
   onInit() {
@@ -143,7 +143,8 @@ class Killboard extends Plugin {
           }
 
           // Do we know about this kill?
-          if(announcedKills.indexOf(res.EventId) !== -1) {
+          announcedKills[discordGuild] = (announcedKills[discordGuild]) ? announcedKills[discordGuild] : [];
+          if(announcedKills[discordGuild].indexOf(res.EventId) !== -1) {
             continue;
           }
 
@@ -159,7 +160,7 @@ class Killboard extends Plugin {
           }
 
           var killRatio = (res.Victim.AverageItemPower / res.Killer.AverageItemPower).toFixed(2); // higher better
-          announcedKills.push(res.EventId);
+          announcedKills[discordGuild].push(res.EventId);
 
           var channel = this.getChannel(discordGuild, channelList[guild.GuildId]);
           channel.send(`Killmail: ${killer}${otherHelpers} killed ${victim} - (${killRatio} gear disparity) https://albiononline.com/en/killboard/kill/${res.EventId}`);
