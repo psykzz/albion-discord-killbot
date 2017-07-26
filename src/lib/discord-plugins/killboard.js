@@ -139,12 +139,12 @@ class Killboard extends Plugin {
           // Skipif we didn't find a guild we care about
           if(guildFound === false) {
             guild = null;
-            return;
+            continue;
           }
 
           // Do we know about this kill?
           if(announcedKills.indexOf(res.EventId) !== -1) {
-            return;
+            continue;
           }
 
           // Formatting
