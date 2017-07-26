@@ -126,10 +126,16 @@ class Killboard extends Plugin {
 
   onTick() {
     albionAPI.getRecentEvents({}, (err, results) => {
-      results.forEach(res => {
-        for(var discordGuild in outputChannels) {
-          var channelList = outputChannels[discordGuild];
-          var guild;
+
+      for(var discordGuild in outputChannels) {
+        var channelList = outputChannels[discordGuild];
+        if(!channelList) {
+          debug(`${discordGuild} has no channelList configured.`);
+          continue;
+        }
+        var guild;
+
+        results.forEach(res => {
           // Was our guild involved
           var guildFound = res.Participants.some(p => {
             guild = p;
@@ -139,13 +145,13 @@ class Killboard extends Plugin {
           // Skipif we didn't find a guild we care about
           if(guildFound === false) {
             guild = null;
-            continue;
+            return;
           }
 
           // Do we know about this kill?
           announcedKills[discordGuild] = (announcedKills[discordGuild]) ? announcedKills[discordGuild] : [];
           if(announcedKills[discordGuild].indexOf(res.EventId) !== -1) {
-            continue;
+            return;
           }
 
           // Formatting
@@ -164,8 +170,8 @@ class Killboard extends Plugin {
 
           var channel = this.getChannel(discordGuild, channelList[guild.GuildId]);
           channel.send(`Killmail: ${killer}${otherHelpers} killed ${victim} - (${killRatio} gear disparity) https://albiononline.com/en/killboard/kill/${res.EventId}`);
-        }
-      });
+        });
+      }
     });
   }
 

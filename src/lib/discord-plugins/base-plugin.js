@@ -5,7 +5,7 @@ class Plugin {
   constructor(bot) {
     this.bot = bot;
 
-    if (this.onTick) {
+    if(this.onTick) {
       this.timer = setInterval(() => {
         this.onTick();
       }, config.TICK_DELAY);
