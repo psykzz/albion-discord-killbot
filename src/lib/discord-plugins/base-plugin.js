@@ -1,4 +1,9 @@
+var debug = require('debug')('Albion:Plugin:Base-Plugin');
 var config = require('../../config');
+
+var ADMIN_IDS = [
+  "113752662788276232" // PsyKzz
+];
 
 class Plugin {
   constructor(bot) {
@@ -12,7 +17,9 @@ class Plugin {
   }
 
   hasAdmin(message) {
-    // if(message.member && !message.member.roles.exists('name', 'ADMIN')) {
+    if (ADMIN_IDS.indexOf(message.author.id) > -1) {
+      return true;
+    }
     if(message.member && !message.member.roles.exists('name', 'Apostles')) {
       this.reply(message, "not enough roles.");
       return false;
