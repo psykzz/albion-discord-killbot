@@ -4,8 +4,8 @@
   "description": "",
   "main": "bin/start.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "start": "node -r dotenv/config src/app.js",
+    "dev": "nodemon -r dotenv/config src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/psykzz/albion-discord-killbot#readme",
   "dependencies": {
-    "albion-api": "^1.1.0",
+    "albion-api": "^1.2.0",
     "async": "^2.5.0",
     "debug": "^2.6.8",
     "discord.js": "^11.1.0",

@@ -30,7 +30,7 @@ class PlayerInfo extends Plugin {
           albionAPI.getPlayerInfo(player.Id, cb);
         },
         function replyMessage(playerInfo, cb) {
-          message.reply(`\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}\`\`\``);
+          message.reply(`https://albiononline.com/en/killboard/player/${playerInfo.Id}\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}\`\`\``);
           cb();
         }
       ], (err) => {
