@@ -9,7 +9,7 @@ var redis = require('../redis');
 var REDIS_PLUGIN_KEY = 'killboard-channels-v2';
 
 var outputChannels = {};
-var announcedKills = [];
+var announcedKills = {};
 class Killboard extends Plugin {
 
   onInit() {
@@ -126,10 +126,16 @@ class Killboard extends Plugin {
 
   onTick() {
     albionAPI.getRecentEvents({}, (err, results) => {
-      results.forEach(res => {
-        for(var discordGuild in outputChannels) {
-          var channelList = outputChannels[discordGuild];
-          var guild;
+
+      for(var discordGuild in outputChannels) {
+        var channelList = outputChannels[discordGuild];
+        if(!channelList) {
+          debug(`${discordGuild} has no channelList configured.`);
+          continue;
+        }
+        var guild;
+
+        results.forEach(res => {
           // Was our guild involved
           var guildFound = res.Participants.some(p => {
             guild = p;
@@ -143,7 +149,8 @@ class Killboard extends Plugin {
           }
 
           // Do we know about this kill?
-          if(announcedKills.indexOf(res.EventId) !== -1) {
+          announcedKills[discordGuild] = (announcedKills[discordGuild]) ? announcedKills[discordGuild] : [];
+          if(announcedKills[discordGuild].indexOf(res.EventId) !== -1) {
             return;
           }
 
@@ -159,12 +166,12 @@ class Killboard extends Plugin {
           }
 
           var killRatio = (res.Victim.AverageItemPower / res.Killer.AverageItemPower).toFixed(2); // higher better
-          announcedKills.push(res.EventId);
+          announcedKills[discordGuild].push(res.EventId);
 
           var channel = this.getChannel(discordGuild, channelList[guild.GuildId]);
           channel.send(`Killmail: ${killer}${otherHelpers} killed ${victim} - (${killRatio} gear disparity) https://albiononline.com/en/killboard/kill/${res.EventId}`);
-        }
-      });
+        });
+      }
     });
   }
 
