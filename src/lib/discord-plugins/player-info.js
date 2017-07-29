@@ -11,10 +11,10 @@ class PlayerInfo extends Plugin {
     if(match) {
 
       async.waterfall([
-        function search(cb) {
+        (cb) => {
           albionAPI.search(match[1], cb);
         },
-        function checkSearch(results, cb) {
+        (results, cb) => {
           if (!results.players) {
             return message.reply('no results.');
           }
@@ -26,11 +26,53 @@ class PlayerInfo extends Plugin {
 
           cb(null, player);
         },
-        function getMoreInfo(player, cb) {
+        (player, cb) => {
           albionAPI.getPlayerInfo(player.Id, cb);
         },
-        function replyMessage(playerInfo, cb) {
-          message.reply(`https://albiononline.com/en/killboard/player/${playerInfo.Id}\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}\`\`\``);
+        (playerInfo, cb) => {
+          // message.reply(`https://albiononline.com/en/killboard/player/${playerInfo.Id}\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}\`\`\``);
+          message.channel.send({embed: {
+              color: 3447003,
+              fields: [
+                {
+                  name: "Character",
+                  value: `${playerInfo.Name}`,
+                  inline: true
+                },
+                {
+                  name: "Guild",
+                  value: `${playerInfo.GuildName}`,
+                  inline: true
+                },
+                {
+                  name: "Alliance",
+                  value: `[${playerInfo.AllianceTag}] ${playerInfo.AllianceName}`,
+                  inline: true
+                },
+                {
+                  name: "Avg Item Power",
+                  value: `${playerInfo.AverageItemPower}`,
+                  inline: true
+                },
+                {
+                  name: "Fame",
+                  value: `Kill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}`,
+                  inline: true
+                },
+                {
+                  name: "Links",
+                  value: `[Killboard](https://albiononline.com/en/killboard/player/${playerInfo.Id})`,
+                  inline: true,
+                }
+              ],
+              timestamp: new Date(),
+              footer: {
+                icon_url: this.bot.client.user.avatarURL,
+                text: `PlayerId: ${playerInfo.Id} | PsyKzz#4695`
+              }
+            }
+          });
+
           cb();
         }
       ], (err) => {
