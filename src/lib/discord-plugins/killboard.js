@@ -169,7 +169,7 @@ class Killboard extends Plugin {
           announcedKills[discordGuild].push(res.EventId);
 
           var channel = this.getChannel(discordGuild, channelList[guild.GuildId]);
-          channel.send(`Killmail: ${killer}${otherHelpers} killed ${victim} - (${killRatio} gear disparity) https://albiononline.com/en/killboard/kill/${res.EventId}`);
+          channel.send(`Killmail: ${killer}${otherHelpers} killed ${victim} - (${killRatio} gear disparity)\nhttps://albiononline.com/en/killboard/kill/${res.EventId}`);
         });
       }
     });
@@ -177,10 +177,12 @@ class Killboard extends Plugin {
 
   getGuildId(guildName, cb) {
     albionAPI.search(guildName, (err, results) => {
-      results.guilds.map(r => {
+      results.guilds.some(r => {
         if(r.Name.toLowerCase() == guildName.toLowerCase()) {
           cb(null, r.Id);
+          return true;
         }
+        return false;
       });
     });
   }
