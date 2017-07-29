@@ -29,18 +29,18 @@ class Plugin {
 
   getChannel(guildName, channelName) {
     var guild = this.bot.client.guilds.find('name', guildName);
-    debug("getChannel: Guild", guildName, guild.name);
     if(!guild) {
       debug("Unable to find guild", guildName);
       return;
     }
+    debug("getChannel: Guild", guildName, guild.name);
 
     var channel = guild.channels.find('name', channelName);
-    debug("getChannel: Channel", channelName, channel.name);
     if(!channel) {
       debug("Unable to find channel", channelName);
       return;
     }
+    debug("getChannel: Channel", channelName, channel.name);
 
     return channel;
   }

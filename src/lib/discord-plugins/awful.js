@@ -97,10 +97,13 @@ class Awful extends Plugin {
 
           var data = (val) ? JSON.parse(val) : {};
           data[message.guild.name] = (data[message.guild.name]) ? data[message.guild.name] : {};
-          delete data[message.guild.name][player.Name];
-          AWFUL_PLAYERS = data;
 
-          redis.set(REDIS_PLUGIN_KEY, JSON.stringify(data), cb);
+          // Only delete teh user if they were assigned
+          if(player.name in data[message.guild.name]) {
+            delete data[message.guild.name][player.Name];
+            AWFUL_PLAYERS = data;
+            redis.set(REDIS_PLUGIN_KEY, JSON.stringify(data), cb);
+          }
         });
       }
     ], (err) => {
@@ -115,7 +118,6 @@ class Awful extends Plugin {
     if (!message) {
       return;
     }
-
 
     var msg = message.cleanContent;
     var match = msg.match(/^\!albion awful (.*)$/i);
