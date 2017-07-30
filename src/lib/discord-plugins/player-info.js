@@ -11,9 +11,9 @@ class PlayerInfo extends Plugin {
     if(!match) {
       return;
     }
-    
+
     message.channel.startTyping();
-    
+
     async.waterfall([
       (cb) => {
         albionAPI.search(match[1], cb);
@@ -34,6 +34,22 @@ class PlayerInfo extends Plugin {
         albionAPI.getPlayerInfo(player.Id, cb);
       },
       (playerInfo, cb) => {
+        albionAPI.getPlayerSoloKills(playerInfo.Id, {range: 'week'}, (err, soloKillDetails) => {
+          if(err) {
+            return cb(err);
+          }
+          cb(null, playerInfo, soloKillDetails);
+        });
+      },
+      (playerInfo, soloKillDetails, cb) => {
+        albionAPI.getPlayerTopKills(playerInfo.Id, {range: 'week'}, (err, topKillDetails) => {
+          if(err) {
+            return cb(err);
+          }
+          cb(null, playerInfo, soloKillDetails, topKillDetails);
+        });
+      },
+      (playerInfo, soloKillDetails, topKillDetails, cb) => {
         // message.reply(`https://albiononline.com/en/killboard/player/${playerInfo.Id}\n\`\`\`text\nPlayer: ${playerInfo.Name}\nGuild: ${playerInfo.GuildName} - [${playerInfo.AllianceTag}] ${playerInfo.AllianceName}\nAvg Item Power: ${playerInfo.AverageItemPower}\n\n** Fame **\nKill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}\`\`\``);
         message.channel.send({embed: {
             color: 3447003,
@@ -61,6 +77,11 @@ class PlayerInfo extends Plugin {
               {
                 name: "Fame",
                 value: `Kill: ${playerInfo.KillFame}\nDeath: ${playerInfo.DeathFame}\nRatio: ${playerInfo.FameRatio}`,
+                inline: true
+              },
+              {
+                name: "Kills (this week)",
+                value: `Solo: ${soloKillDetails.length}\nOverall: ${topKillDetails.length}`,
                 inline: true
               },
               {
