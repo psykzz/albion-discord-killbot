@@ -34,7 +34,7 @@ class PlayerInfo extends Plugin {
         albionAPI.getPlayerInfo(player.Id, cb);
       },
       (playerInfo, cb) => {
-        albionAPI.getPlayerSoloKills(playerInfo.Id, {range: 'week', limit: 50}, (err, soloKillDetails) => {
+        albionAPI.getPlayerSoloKills(playerInfo.Id, {range: 'week'}, (err, soloKillDetails) => {
           if(err) {
             return cb(err);
           }
@@ -42,7 +42,7 @@ class PlayerInfo extends Plugin {
         });
       },
       (playerInfo, soloKillDetails, cb) => {
-        albionAPI.getPlayerTopKills(playerInfo.Id, {range: 'week', limit: 50}, (err, topKillDetails) => {
+        albionAPI.getPlayerTopKills(playerInfo.Id, {range: 'week'}, (err, topKillDetails) => {
           if(err) {
             return cb(err);
           }
