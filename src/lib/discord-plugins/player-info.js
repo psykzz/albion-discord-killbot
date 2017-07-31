@@ -20,11 +20,13 @@ class PlayerInfo extends Plugin {
       },
       (results, cb) => {
         if (!results.players) {
+          message.channel.stopTyping();
           return message.reply('no results.');
         }
 
         var player = results.players[0];
         if(!player) {
+          message.channel.stopTyping();
           return message.reply('no results.');
         }
 

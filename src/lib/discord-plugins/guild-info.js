@@ -20,11 +20,13 @@ class GuildInfo extends Plugin {
       },
       (results, cb) => {
         if (!results.guilds) {
+          message.channel.stopTyping();
           return message.reply('no results.');
         }
 
         var guild = results.guilds[0];
         if(!guild) {
+          message.channel.stopTyping();
           return message.reply('no results.');
         }
 
