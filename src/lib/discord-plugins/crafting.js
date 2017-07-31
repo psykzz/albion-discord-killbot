@@ -10,11 +10,6 @@ class PlayerInfo extends Plugin {
 
   removeCrafter(message, match) {
     message.channel.startTyping();
-    var endEarly = (msg) => {
-      message.reply(msg);
-      message.channel.stopTyping();
-    };
-
     var player = message.mentions.users.first();
     if(!player) {
       return;
@@ -57,10 +52,6 @@ class PlayerInfo extends Plugin {
   }
   addCrafter(message, match) {
     message.channel.startTyping();
-    var endEarly = (msg) => {
-      message.reply(msg);
-      message.channel.stopTyping();
-    };
 
     var item = match[1];
     var tier = match[2];
@@ -107,10 +98,6 @@ class PlayerInfo extends Plugin {
 
   handleSearch(message, match) {
     message.channel.startTyping();
-    var endEarly = (msg) => {
-      message.reply(msg);
-      message.channel.stopTyping();
-    };
 
     var item = match[1];
     var tier = match[2];
@@ -128,12 +115,14 @@ class PlayerInfo extends Plugin {
         results = results[guildId] || {};
         var tierCrafters = results[tier];
         if(!tierCrafters) {
-          return endEarly(`no one is able to craft **T${tier}** yet.`);
+          message.reply(`no one is able to craft **T${tier}** yet.`);
+          return message.channel.stopTyping();
         }
 
         var crafters = tierCrafters[item];
         if(!crafters || crafters.length === 0) {
-          return endEarly(`no one is able to craft **${item}** yet.`);
+          message.reply(`no one is able to craft **${item}** yet.`);
+          return message.channel.stopTyping();
         }
         cb(null, crafters);
       },
