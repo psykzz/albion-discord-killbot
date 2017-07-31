@@ -9,7 +9,6 @@ var REDIS_PLUGIN_KEY = 'albion-crafters';
 class PlayerInfo extends Plugin {
 
   removeCrafter(message, match) {
-    message.channel.startTyping();
     var player = message.mentions.users.first();
     if(!player) {
       return;
@@ -43,7 +42,6 @@ class PlayerInfo extends Plugin {
         message.reply(`removed <@${player.id}> as a crafter.`);
       }
     ], (err) => {
-      message.channel.stopTyping();
       if(err) {
         debug('Error handling the request', err);
       }
@@ -51,8 +49,6 @@ class PlayerInfo extends Plugin {
 
   }
   addCrafter(message, match) {
-    message.channel.startTyping();
-
     var item = match[1];
     var tier = match[2];
 
@@ -89,7 +85,6 @@ class PlayerInfo extends Plugin {
         message.reply(`added <@${player.id}> as a crafter of tier ${tier} ${item}.`);
       }
     ], (err) => {
-      message.channel.stopTyping();
       if(err) {
         debug('Error handling the request', err);
       }
@@ -97,7 +92,6 @@ class PlayerInfo extends Plugin {
   }
 
   handleSearch(message, match) {
-    message.channel.startTyping();
 
     var item = match[1];
     var tier = match[2];
@@ -116,13 +110,11 @@ class PlayerInfo extends Plugin {
         var tierCrafters = results[tier];
         if(!tierCrafters) {
           message.reply(`no one is able to craft **T${tier}** yet.`);
-          return message.channel.stopTyping();
         }
 
         var crafters = tierCrafters[item];
         if(!crafters || crafters.length === 0) {
           message.reply(`no one is able to craft **${item}** yet.`);
-          return message.channel.stopTyping();
         }
         cb(null, crafters);
       },
@@ -157,7 +149,6 @@ class PlayerInfo extends Plugin {
         cb();
       }
     ], (err) => {
-      message.channel.stopTyping();
       if(err) {
         debug('Error handling the request', err);
       }
