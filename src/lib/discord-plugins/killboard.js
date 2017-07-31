@@ -46,7 +46,7 @@ class Killboard extends Plugin {
       var victimInventory = [];
       res.Victim.Inventory.forEach(item => {
         if(!item) { return; }
-        if(parseInt(item.Type.slice(1, 2), 10) >= 5) {
+        if(parseInt(item.Type.slice(1, 2), 10) >= 4) {
           victimInventory.push(`${item.Type} x${item.Count}`);
         }
       });
@@ -73,7 +73,7 @@ class Killboard extends Plugin {
               inline: true,
             },
             {
-              name: "Dropped items (T5+)",
+              name: "Dropped items (T4+)",
               value: victimInventory.join("\n")
             }
           ],
