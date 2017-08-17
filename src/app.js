@@ -1,5 +1,9 @@
 var debug = require('debug')('Albion:App');
 
+if(process.env.NEW_RELIC_LICENSE_KEY) {
+  require('newrelic');
+}
+
 var web = require('express')();
 var router = require('./lib/router');
 var Bot = require('./lib/discord');
