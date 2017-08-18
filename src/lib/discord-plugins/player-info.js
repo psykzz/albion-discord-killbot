@@ -63,7 +63,7 @@ class PlayerInfo extends Plugin {
               },
               {
                 name: "Guild",
-                value: `${playerInfo.GuildName}`,
+                value: `${playerInfo.GuildName || "No Guild"}`,
                 inline: true
               },
               {
