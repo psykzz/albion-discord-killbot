@@ -74,7 +74,7 @@ class Killboard extends Plugin {
   getServerStatus(cb) {
     async.parallel({
       live: (cb) => {
-        request('http://live.albiononline.com/status.txt', (e,r,b) => {
+        request('http://serverstatus.albiononline.com:9099', (e,r,b) => {
           cb(null, JSON.parse(b.trim()));
         });
       },

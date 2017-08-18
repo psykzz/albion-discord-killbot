@@ -21,10 +21,11 @@ bot.use([
   require('./lib/discord-plugins/crafting'),
   require('./lib/discord-plugins/market'),
   // require('./lib/discord-plugins/server-status'), // broken due to weird string from status (new lines in string)
-  require('./lib/discord-plugins/player-info')
+  require('./lib/discord-plugins/player-info'),
+  require('./lib/discord-plugins/debug-info'),
 ]);
 
-bot.login(() => {});
 web.listen(config.PORT, function() {
   debug(`Listening on port ${config.PORT}`);
 });
+bot.login(() => {});
