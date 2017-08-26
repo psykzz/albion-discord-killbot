@@ -1,10 +1,6 @@
 var debug = require('debug')('Albion:Plugin:BasePlugin');
 var config = require('../../config');
 
-var ADMIN_IDS = [
-  "113752662788276232" // PsyKzz
-];
-
 class Plugin {
   constructor(bot) {
     this.bot = bot;
@@ -17,9 +13,7 @@ class Plugin {
   }
 
   hasAdmin(message) {
-    if (ADMIN_IDS.indexOf(message.author.id) > -1) {
-      return true;
-    }
+    // if(message.member && !message.member.roles.exists('name', 'ADMIN')) {
     if(message.member && !message.member.roles.exists('name', 'Apostles')) {
       this.reply(message, "not enough roles.");
       return false;
@@ -29,18 +23,18 @@ class Plugin {
 
   getChannel(guildName, channelName) {
     var guild = this.bot.client.guilds.find('name', guildName);
+    debug("getChannel: Guild", guildName, guild.name);
     if(!guild) {
       debug("Unable to find guild", guildName);
       return;
     }
-    debug("getChannel: Guild", guildName, guild.name);
 
     var channel = guild.channels.find('name', channelName);
+    debug("getChannel: Channel", channelName, channel.name);
     if(!channel) {
       debug("Unable to find channel", channelName);
       return;
     }
-    debug("getChannel: Channel", channelName, channel.name);
 
     return channel;
   }
