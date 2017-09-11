@@ -29,3 +29,8 @@ web.listen(config.PORT, function() {
   debug(`Listening on port ${config.PORT}`);
 });
 bot.login(() => {});
+
+module.exports = {
+  bot: bot,
+  web: web
+}
