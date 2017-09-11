@@ -5,15 +5,19 @@ if(process.env.NEW_RELIC_LICENSE_KEY) {
 }
 
 var web = require('express')();
-var router = require('./lib/router');
 var Bot = require('./lib/discord');
+
+module.exports = {
+  bot: bot,
+  web: web
+}
 
 var config = require('./config');
 require('heroku-self-ping')(config.APP_URL);
 
 var bot = new Bot(config.DISCORD_TOKEN);
 
-web.use('/', router);
+web.use('/', require('./lib/router'));
 bot.use([
   require('./lib/discord-plugins/awful'),
   require('./lib/discord-plugins/killboard'),
@@ -30,7 +34,4 @@ web.listen(config.PORT, function() {
 });
 bot.login(() => {});
 
-module.exports = {
-  bot: bot,
-  web: web
-}
+
