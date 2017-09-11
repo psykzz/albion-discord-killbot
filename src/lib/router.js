@@ -11,6 +11,10 @@ router.get('/', function (req, res) {
 });
 
 router.get('/guilds', function (req, res) {
+  if(!bot) {
+    return res.json({error: "bot not defined"});
+  }
+  
   res.json({
     guilds: bot.guilds.map(item => {
       return {
