@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var bot = require('../app').bot;
+var app = require('../app');
 
 var config = require('../config');
 
@@ -11,12 +11,13 @@ router.get('/', function (req, res) {
 });
 
 router.get('/guilds', function (req, res) {
-  if(!bot) {
+  if(!app.bot) {
+    console.log(app);
     return res.json({error: "bot not defined"});
   }
   
   res.json({
-    guilds: bot.guilds.map(item => {
+    guilds: bot.client.guilds.map(item => {
       return {
         name: item.name,
         id: item.id
