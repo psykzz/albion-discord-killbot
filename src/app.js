@@ -7,10 +7,6 @@ if(process.env.NEW_RELIC_LICENSE_KEY) {
 var web = require('express')();
 var Bot = require('./lib/discord');
 
-module.exports = {
-  bot: bot,
-  web: web
-}
 
 var config = require('./config');
 require('heroku-self-ping')(config.APP_URL);
@@ -35,3 +31,7 @@ web.listen(config.PORT, function() {
 bot.login(() => {});
 
 
+module.exports = {
+  bot: bot,
+  web: web
+}
