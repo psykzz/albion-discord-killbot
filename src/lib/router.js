@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var app = require('../app');
+
 
 var config = require('../config');
 
@@ -11,8 +11,8 @@ router.get('/', function (req, res) {
 });
 
 router.get('/guilds', function (req, res) {
+  var app = require('../app');
   if(!app.bot) {
-    console.log(app);
     return res.json({error: "bot not defined"});
   }
   
