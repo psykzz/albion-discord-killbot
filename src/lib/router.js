@@ -15,7 +15,7 @@ router.get('/guilds', function (req, res) {
   }
   
   res.json({
-    guilds: bot.client.guilds.map(item => {
+    guilds: app.bot.client.guilds.map(item => {
       return {
         name: item.name,
         id: item.id
