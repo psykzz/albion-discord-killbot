@@ -18,6 +18,7 @@ router.get('/guilds', function (req, res) {
     guilds: app.bot.client.guilds.map(item => {
       return {
         name: item.name,
+        owner: `${item.owner.user.username}#${item.owner.user.discriminator}`
         id: item.id
       }
     })
